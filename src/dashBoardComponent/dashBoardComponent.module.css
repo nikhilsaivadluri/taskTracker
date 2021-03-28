@@ -14,6 +14,7 @@
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #00000029;
     opacity: 1;
+    height: 72px;
 }
 
 .header-content
@@ -33,3 +34,23 @@
     position: absolute;
     right: 0px
 }
+
+
+.card{
+    
+    width: 304px;
+    height: 158px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #0000000A;
+    border-radius: 12px;
+    opacity: 1;
+}
+
+.db-body
+{
+    height: 628px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
