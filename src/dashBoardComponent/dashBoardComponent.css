@@ -1,0 +1,54 @@
+
+.contentCenter
+{
+    justify-content: center;
+    display: flex;
+}
+
+.summaryCard
+{
+    background: #FFFFFF;
+    box-shadow: 0px 3px 6px #0000000A;
+    border-radius: 12px;
+    opacity: 1;
+    padding: 24px 24px;
+    color: #8F9EA2;
+    margin:12px;
+}
+
+.mr-lr-0{
+    margin-left: 0px  !important;
+    margin-right: 0px  !important;
+}
+
+.card-title {
+    font-size: 20px;
+    text-align: left;
+    letter-spacing: 0px;
+    color: #537178;
+    opacity: 1;
+    font-weight: 400;
+}
+
+.card-list{
+        padding-inline-start: 0px;
+        font-size: 20px;
+    
+}
+
+.list-wrap{
+    list-style-position: inside;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.striked
+{
+    text-decoration: line-through;
+}
+
+.pd-25
+{
+    padding: 25px 30px;
+}
