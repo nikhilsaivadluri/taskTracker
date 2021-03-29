@@ -1,13 +1,17 @@
-import React, { useState, useEffect} from "react";
+import React, { useState} from "react";
 import './loginComponent.css';
+import { useHistory } from "react-router-dom";
 
 function LoginComponent()
 {
     const [id,setId] = useState();
     const [name,setName] = useState();
+    const history = useHistory();
 
     const handleSubmit = (e)=>{
-        e.preventDefault();
+        history.push("/dashboard");
+
+        //e.preventDefault();
     }
 
     return (

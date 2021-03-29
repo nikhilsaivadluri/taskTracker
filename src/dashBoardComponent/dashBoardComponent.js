@@ -5,13 +5,16 @@ import trash from './../assets/trash-solid.svg'
 import edit from './../assets/pen-solid.svg'
 import Modal from 'react-bootstrap/Modal'
 import Chart from "react-apexcharts";
-
+import { useHistory } from "react-router-dom";
 
 function DashBoardComponent() {
     const [modalShow, setModalShow] = useState(false);
+    const [editModalShow, setEditModalShow] = useState(false);
+    const [editTaskID,setEditTaskId] = useState(0); 
     const [tasks, setTasks] = useState([]);
     const [taskName, setTaskName] = useState("");
     const [completedTasks,setCompletedTasks] = useState(0);
+    const [chartData,setChartData]= useState([]);
     useEffect(()=>{
       let savedTasks = JSON.parse(localStorage.getItem("tasks"));
       setTasks(savedTasks);
@@ -19,72 +22,6 @@ function DashBoardComponent() {
     
      
     },[]);
-
-    let styles = {
-        body: {
-            height: "628px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
-        },
-        dashmain: {
-            backgroundColor: "#F4F4F6",
-            height: "700px",
-            width: "100%",
-        },
-        notask: {
-            card: {
-                width: "304px",
-                height: "158px",
-                background: "#FFFFFF 0% 0% no-repeat padding-box",
-                boxShadow: "0px 3px 6px #0000000A",
-                borderRadius: "12px",
-                opacity: 1,
-                display: "flex",
-                flexDirection: "column",
-                padding: "37px 64px"
-            },
-            heading: {
-                textAlign: "center",
-                font: "normal normal medium 20px/28px Montserrat",
-                letterSpacing: "0px",
-                color: "#537178",
-                opacity: "1"
-            }
-        },
-        addTask:{
-            modal: {
-                width: '296px',
-                height: '195px',
-                background: "#FFFFFF",
-                boxShadow: "0px 3px 6px #00000029",
-                borderRadius: "12px",
-                opacity: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-            },
-            inputbox: {
-                width: "100%",
-                margin: "18px 0px",
-                background: "#e5e5e5",
-                border: "1px #e5e5e5",
-                padding: "9px 16px",
-                borderRadius: "8px",
-                fontSize: "14px",
-                color: "#7A7D7E",
-            },
-            button: {
-                width: "100%",
-                fontSize: "14px"
-            },
-            heading: {
-                fontSize: "20px",
-                color: "#537178"
-            }
-        }
-
-    }
 
     let series = [5, 15];
     let chartOptions = {
@@ -107,17 +44,28 @@ function DashBoardComponent() {
     })
 
 
-    let totalList = tasks.map(task => {
+    let totalList = tasks.map((task,index) => {
         return (<li key={task.id}>
-            <div className="row">
-                <input type="checkbox" onChange={(e)=> changeCompletionStatus(task.id,e.target.checked)} />
-                {!task.completed && <span className="list-wrap">{task.name}</span>}
-                {task.completed && <span className="list-wrap striked">{task.name}</span>}
-                <img src={edit} height="16px" width="16px" alt="edit" />
-                <img src={trash} height="16px" width="16px" alt="trash" onClick={() => deleteTask(task.id)} />
+            <div className="row" style={{alignItems:"baseline"}}>
+                <div className="col-sm-1 col-2"> <input className="custom-checkbox" type="checkbox" checked={task.completed} onChange={(e)=> changeCompletionStatus(task.id,e.target.checked)} /></div>
+                {!task.completed && <div className="col-sm-9 col-6 text-left active-task"> <span className="list-wrap">{task.name}</span></div>}
+                {task.completed && <div className="col-sm-9 col-6 text-left deactive-task"> <span className="list-wrap striked">{task.name}</span></div>}
+                <div className="col-sm-2 col-4 text-right">
+                    <img className="icon" src={edit} height="16px" width="16px" alt="edit" onClick={() => onEdit(task.id,task.name)} />
+                    <img className="icon" src={trash} height="16px" width="16px" alt="trash" onClick={() => deleteTask(task.id)} />
+                </div>
             </div>
+            {(tasks.length-1)!==index && <div className="task-separator"></div> }
         </li>)
     })
+    
+    function onEdit(id,name)
+    {
+        setEditModalShow(true);
+        setEditTaskId(id);
+        setTaskName(name);
+    }
+
 
     function deleteTask(id) {
         let index = tasks.findIndex((task, index, array) => {
@@ -143,6 +91,18 @@ function DashBoardComponent() {
         getCompletionStatus();
     }
 
+    function updateTask()
+    {
+        let index = tasks.findIndex((task, index, array) => {
+            return task.id === editTaskID;
+        });
+        let temp =tasks;
+        temp[index].name=taskName;
+        localStorage.setItem("tasks", JSON.stringify(temp));
+        setTasks(temp);
+        setEditModalShow(false);
+    }
+
     function getCompletionStatus()
     {
         let completedtasks=0;
@@ -151,6 +111,7 @@ function DashBoardComponent() {
             completedtasks++;
         });
         setCompletedTasks(completedtasks);
+        setChartData([completedtasks,tasks.length-completedtasks]);
        
     }
 
@@ -167,11 +128,11 @@ function DashBoardComponent() {
     }
 
     return (
-        <div style={styles.dashmain}>
+        <div className="dashmain">
             <Header username="Nikhil" />
-            { tasks.length === 0 && <div style={styles.body}>
-                <div style={styles.notask.card}>
-                    <span style={styles.notask.heading}>You have no task.</span>
+            { tasks.length === 0 && <div className="notask-body">
+                <div className="card">
+                    <span className="card-content">You have no task.</span>
                     <button className="btn btn-primary" onClick={() => setModalShow(true)}>+ New Task</button>
                 </div>
                
@@ -189,18 +150,18 @@ function DashBoardComponent() {
                         <ul className="card-list">{latestTasksList}</ul>
                     </div>
                     <div className="col-sm-3 col-12 contentCenter summaryCard">
-                        <Chart options={chartOptions} series={series} type="pie" height="130px" width="130px" />
+                        <Chart options={chartOptions} series={chartData} type="pie" height="130px" width="130px" />
                     </div>
                 </div>
-                <div className="row mr-lr-0">
-                    <div className="offset-sm-1 col-sm-1 col-12 pd-25 text-center">Tasks</div>
-                    <div className="offset-sm-4 col-sm-3 col-12 pd-25"><input style={{width:"100%"}} type="text" placeholder="search by task name" /></div>
-                    <div className="col-sm-2 col-12 pd-25"><button style={{width:"100%"}}  className="btn btn-primary" onClick={() => setModalShow(true)} >+New Task</button></div>
+                <div className="row mr-lr-0 listCard-heading">
+                    <div className="offset-sm-1 col-sm-1 col-12 pd-7  card-title listCard-Options contentCenter"><span className="mr-tb-10 text-center">Tasks</span></div>
+                    <div className="offset-sm-4 col-sm-3 col-12 pd-7"><input className="inputbox" type="text" placeholder="search by task name" /></div>
+                    <div className="col-sm-2 col-12 pd-25 listCard-Options"><button style={{width:"100%"}}  className="btn btn-primary mr-tb-10" onClick={() => setModalShow(true)} >+New Task</button></div>
 
                 </div>
                 <div className="row mr-lr-0 contentCenter">
-                    <div className="col-sm-8 col-12">
-                    <ul className="card-list list-unstyled">{totalList}</ul>
+                    <div className="col-sm-10 col-12 listCard">
+                    <ul className="card-list list-unstyled mr-bt-0">{totalList}</ul>
                     </div>
                 </div>
 
@@ -209,59 +170,48 @@ function DashBoardComponent() {
              show={modalShow}
              onHide={() => setModalShow(false)}
             size="sm"
-            aria-labelledby="contained-modal-title-vcenter"
+            aria-labelledby="Add Task"
             centered
-            style={{ border: "0px" }}
+            className="modal"
             > 
-            <Modal.Body style={{ padding: "24px 24px" }}>
-                <h4 style={styles.addTask.heading}>+ New Task</h4>
-                <input type="text" style={styles.addTask.inputbox} placeholder="Task Name" onChange={(e) => setTaskName(e.target.value)} />
-                <button style={styles.addTask.button} className="btn btn-primary" onClick={() => addTask()}>+ New Task</button>
+            <Modal.Body style={{ padding: "24px 24px"}}>
+                <h4 className="card-title">+ New Task</h4>
+                <input type="text" className="inputbox" placeholder="Task Name" onChange={(e) => setTaskName(e.target.value)} />
+                <button className="btn btn-primary custom-button" onClick={() => addTask()}>+ New Task</button>
             </Modal.Body>
 
         </Modal>
+        <Modal
+             show={editModalShow}
+             onHide={() => setEditModalShow(false)}
+            size="sm"
+            aria-labelledby="Edit Task"
+            centered
+            className="modal"
+            > 
+            <Modal.Body style={{ padding: "24px 24px"}}>
+                <h4 className="card-title">Update Task</h4>
+                <input type="text" className="inputbox" value={taskName} placeholder="Task Name" onChange={(e) => setTaskName(e.target.value)} />
+                <button className="btn btn-primary custom-button" onClick={() => updateTask()}>Update Task</button>
+            </Modal.Body>
+
+        </Modal>
+
+
         </div>
     )
 
 }
 
 function Header({ username }) {
-    const styles = {
-        header: {
-            display: "flex",
-            flexDirection: "row",
-            /* padding: 12px 123px; */
-            padding: "1% 5%",
-            background: "#FFFFFF 0% 0% no-repeat padding-box",
-            boxShadow: "0px 3px 6px #00000029",
-            opacity: 1,
-            height: "72px"
-        },
-        headerContent: {
-            display: "flex",
-            flexDirection: "row",
-            backgroundColor: "white",
-            position: "relative",
-            width: "100%",
-            alignItems: "center",
-            fontFamily: "normal normal medium 19px Montserrat !important",
-            letterSpacing: "0px",
-            color: "#6D8187",
-            opacity: 1,
-        },
-        right: {
-            position: "absolute",
-            right: "0px"
-        }
-
-    }
+    const history = useHistory();
     return (
-        <div style={styles.header}>
-            <div style={styles.headerContent}>
-                <img src={profile} height="48px" width="48px" alt="profile"/>
-                <span style={{ padding: "0px 16px" }}>{username}</span>
-                <span style={styles.right}>Logout</span>
-            </div>
+        <div className="row header mr-lr-0">
+            <div className="col-sm-2 offset-sm-1 col-2 profile">
+                 <img src={profile} height="48px" width="48px" alt="profile"/>
+                 <span style={{ padding: "0px 16px" }}>{username}</span>
+            </div>     
+            <div className="col-sm-2 offset-sm-6 col-3 offset-7 logout"><span className="logout" onClick={()=>history.push("/login")}>Logout</span></div>
         </div>
     )
 }

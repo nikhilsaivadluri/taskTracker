@@ -1,9 +1,42 @@
+.dashmain {
+    background-color: #F4F4F6;
+    height: 700px;
+    width: 100%;
+}
+
+.notask-body{
+        height: 628px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+}
+
+.card {
+    width: 304px;
+    height: 158px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #0000000A;
+    border-radius: 12px !important;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 37px 64px;
+}
+
+.card-content{
+        text-align: center;
+        font-size: 20px;
+        letter-spacing: 0px;
+        color: #537178;
+        opacity: 1;
+}
+
 
 .contentCenter
 {
     justify-content: center;
     display: flex;
-}
+}  
 
 .summaryCard
 {
@@ -13,7 +46,7 @@
     opacity: 1;
     padding: 24px 24px;
     color: #8F9EA2;
-    margin:12px;
+    margin: 21px 27px;
 }
 
 .mr-lr-0{
@@ -48,7 +81,129 @@
     text-decoration: line-through;
 }
 
-.pd-25
+.pd-7
 {
-    padding: 25px 30px;
+    /* padding: 25px 30px; */
+    padding: 7px;
+}
+
+.mr-bt-0
+{
+    margin-bottom: 0px;
+}
+
+.mr-tb-10
+{
+    margin: 10px 0px !important;
+}
+
+.modal {
+    /* /width: '296px',
+    //height: '195px', */
+    /* //background: #FFFFFF; */
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 12px  !important;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+.modal-content{
+    border-radius: 12px !important;
+}
+
+.inputbox {
+    width: 100%;
+    margin: 18px 0px;
+    background: #e5e5e5;
+    border: 1px #e5e5e5;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #7A7D7E;
+}
+
+.custom-button {
+    width: 100%;
+    font-size: 14px;
+}
+
+.custom-checkbox{
+    height: 15px;
+    width:  15px;
+}
+
+.listCard{
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000014;
+    border-radius: 12px;
+    opacity: 1;
+    padding: 15px 40px;
+}
+
+.listCard-heading{
+   background-color: #F4F4F6;
+}
+
+.listCard-Options
+{
+    display: flex;
+    align-items: center;
+}
+.icon
+{
+    margin: 14px;
+}
+
+.task-separator{
+    margin: 2px 10px;
+    height:2px ;
+    background-color:#E8E8E8;
+}
+
+.active-task{
+    text-align: left;
+    font-size:  24px !important;
+    letter-spacing: 0px;
+    color: #5285EC;
+    opacity: 1;
+    padding-left: 0px !important;
+}
+.deactive-task{
+    text-align: left;
+    font-size: 24px !important;
+    letter-spacing: 0px;
+    color: #537178;
+    opacity: 1;
+    padding-left: 0px !important;
+}
+
+input:focus{
+    outline: none;
+}
+
+
+.header{
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 0px 3px 6px #00000029;
+        opacity: 1;
+        height: 72px;
+        color: #6D8187;
+        font-size: 20px;
+}
+
+.profile
+{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    
+}
+
+.logout
+{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    cursor: pointer;
 }
