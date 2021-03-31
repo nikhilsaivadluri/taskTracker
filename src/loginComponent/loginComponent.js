@@ -1,6 +1,7 @@
 import React, { useState} from "react";
 import './loginComponent.css';
 import { useHistory } from "react-router-dom";
+import axios from 'axios';
 
 function LoginComponent()
 {
@@ -9,9 +10,24 @@ function LoginComponent()
     const history = useHistory();
 
     const handleSubmit = (e)=>{
-        history.push("/dashboard");
+     
+         let payload ={
+            name:name,
+            id: id
+        };
+        axios.post(`http://localhost:3000/api/login`,payload)
+        .then(res => {
+         console.log(res);
+         localStorage.setItem("token",res.data.token.token);
+         localStorage.setItem("currentuser",res.data.token.name);
+         localStorage.setItem("imageUrl",res.data.image)
+         history.push("/dashboard");
+        },error=>{
+            console.log(error);
+        })
+       
 
-        //e.preventDefault();
+        
     }
 
     return (

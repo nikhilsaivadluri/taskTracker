@@ -1,7 +1,7 @@
 .dashmain {
     background-color: #F4F4F6;
-    height: 700px;
     width: 100%;
+    padding-bottom: 50px;
 }
 
 .notask-body{
@@ -44,7 +44,7 @@
     box-shadow: 0px 3px 6px #0000000A;
     border-radius: 12px;
     opacity: 1;
-    padding: 24px 24px;
+    padding: 24px 26px !important;
     color: #8F9EA2;
     margin: 21px 27px;
 }
@@ -55,12 +55,12 @@
 }
 
 .card-title {
-    font-size: 20px;
+    font-size: 24px;
     text-align: left;
     letter-spacing: 0px;
     color: #537178;
     opacity: 1;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .card-list{
@@ -123,6 +123,17 @@
     color: #7A7D7E;
 }
 
+.searchbox
+{
+  background-color:   #D9DFEB;
+  width: 100%;
+  margin: 18px 0px;
+  border: 1px #e5e5e5;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #7A7D7E;
+}
 .custom-button {
     width: 100%;
     font-size: 14px;
