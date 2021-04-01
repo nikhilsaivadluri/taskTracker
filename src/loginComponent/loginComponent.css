@@ -1,7 +1,7 @@
 .main{
 
     background-color: #F4F4F6;
-    height: 700px;
+    min-height: 720px;
     width: 100%;
     display: flex;
     align-items: center;

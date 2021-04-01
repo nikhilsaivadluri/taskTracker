@@ -2,7 +2,7 @@ import React, { useState} from "react";
 import './loginComponent.css';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
-
+import config from '../config';
 function LoginComponent()
 {
     const [id,setId] = useState();
@@ -15,7 +15,7 @@ function LoginComponent()
             name:name,
             id: id
         };
-        axios.post(`http://localhost:3000/api/login`,payload)
+        axios.post(`${config.apiUrl}/login`,payload)
         .then(res => {
          console.log(res);
          localStorage.setItem("token",res.data.token.token);

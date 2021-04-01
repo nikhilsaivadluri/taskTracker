@@ -7,6 +7,7 @@ import Modal from 'react-bootstrap/Modal'
 import Chart from "react-apexcharts";
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
+import config from '../config';
 
 function DashBoardComponent() {
     const [modalShow, setModalShow] = useState(false);
@@ -27,7 +28,7 @@ function DashBoardComponent() {
     const username=localStorage.getItem("currentuser");
     useEffect(()=>{
     
-      axios.get(`http://localhost:3000/api/dashboard`,{headers})
+      axios.get(`${config.apiUrl}/dashboard`,{headers})
       .then(res => {
          console.log(res);
          setDashboardData(res.data);
@@ -35,7 +36,7 @@ function DashBoardComponent() {
 
          if(res.data.totalTasks!==0)
          {
-            axios.get(`http://localhost:3000/api/tasks`,{headers})
+            axios.get(`${config.apiUrl}/tasks`,{headers})
             .then(res => {
                 setTasks(res.data);
                 setFilteredTasks(res.data);
@@ -70,28 +71,12 @@ function DashBoardComponent() {
             return (<li className="list-wrap" key={task._id}>{task.name}</li>)
     })
 
-
-    // let totalList = tasks.map((task,index) => {
-    //     return (<li key={task._id}>
-    //         <div className="row" style={{alignItems:"baseline"}}>
-    //             <div className="col-sm-1 col-2"> <input className="custom-checkbox" type="checkbox" checked={task.completed} onChange={(e) => changeCompletionStatus(task,e.target.checked)} /></div>
-    //             {!task.completed && <div className="col-sm-9 col-6 text-left active-task"> <span className="list-wrap">{task.name}</span></div>}
-    //             {task.completed && <div className="col-sm-9 col-6 text-left deactive-task"> <span className="list-wrap striked">{task.name}</span></div>}
-    //             <div className="col-sm-2 col-4 text-right">
-    //                 <img className="icon" src={edit} height="16px" width="16px" alt="edit" onClick={() => onEdit(task)} />
-    //                 <img className="icon" src={trash} height="16px" width="16px" alt="trash" onClick={() => deleteTask(task._id)} />
-    //             </div>
-    //         </div>
-    //         {(tasks.length-1)!==index && <div className="task-separator"></div> }
-    //     </li>)
-    // })
-
     let totalList = filteredTasks.map((task,index) => {
         return (<li key={task._id}>
             <div className="row" style={{alignItems:"baseline"}}>
                 <div className="col-sm-1 col-2"> <input className="custom-checkbox" type="checkbox" checked={task.completed} onChange={(e) => changeCompletionStatus(task,e.target.checked)} /></div>
-                {!task.completed && <div className="col-sm-9 col-6 text-left active-task"> <span className="list-wrap">{task.name}</span></div>}
-                {task.completed && <div className="col-sm-9 col-6 text-left deactive-task"> <span className="list-wrap striked">{task.name}</span></div>}
+                {!task.completed && <div className="col-sm-9 col-6 text-left active-task"> <span style={{display:"block"}} className="list-wrap">{task.name}</span></div>}
+                {task.completed && <div className="col-sm-9 col-6 text-left deactive-task"> <span style={{display:"block"}}  className="list-wrap striked">{task.name}</span></div>}
                 <div className="col-sm-2 col-4 text-right">
                     <img className="icon" src={edit} height="16px" width="16px" alt="edit" onClick={() => onEdit(task)} />
                     <img className="icon" src={trash} height="16px" width="16px" alt="trash" onClick={() => deleteTask(task._id)} />
@@ -105,11 +90,11 @@ function DashBoardComponent() {
     {
        let filteredtasks = tasks.filter(task=>{
                if((task.name).toLowerCase().includes(taskname.toLowerCase()))
-               {
                    return true;
-               }
+                else
+                 return false;   
        });
-       if(taskname=="")
+       if(taskname==="")
            setFilteredTasks(tasks);
        else
         setFilteredTasks(filteredtasks);
@@ -126,7 +111,7 @@ function DashBoardComponent() {
      function changeCompletionStatus(task,isCompleted)
     {
         let payload={ ...task,completed:isCompleted};
-        axios.put(`http://localhost:3000/api/tasks/${task._id}`,payload,{headers})
+        axios.put(`${config.apiUrl}/tasks/${task._id}`,payload,{headers})
         .then(res => {
          console.log(res);
          setDataChanged(dataChanged+1);
@@ -139,7 +124,7 @@ function DashBoardComponent() {
 
     function deleteTask(id) {
 
-        axios.delete(`http://localhost:3000/api/tasks/${id}`,{headers})
+        axios.delete(`${config.apiUrl}/tasks/${id}`,{headers})
         .then(res => {
          console.log(res);
          setDataChanged(dataChanged+1);
@@ -153,7 +138,7 @@ function DashBoardComponent() {
     function addTask() {
 
         let payload={name: taskName};
-        axios.post(`http://localhost:3000/api/tasks`,payload,{headers})
+        axios.post(`${config.apiUrl}/tasks`,payload,{headers})
         .then(res => {
          console.log(res);
          setModalShow(false);
@@ -167,7 +152,7 @@ function DashBoardComponent() {
     function updateTask()
     {
         let payload={ name:editTaskDetails.name,completed:editTaskDetails.completed};
-        axios.put(`http://localhost:3000/api/tasks/${editTaskDetails._id}`,payload,{headers})
+        axios.put(`${config.apiUrl}/tasks/${editTaskDetails._id}`,payload,{headers})
         .then(res => {
          console.log(res);
          setEditModalShow(false);
@@ -206,7 +191,7 @@ function DashBoardComponent() {
                 </div>
                 <div className="row mr-lr-0 listCard-heading">
                     <div className="offset-sm-1 col-sm-1 col-12 pd-7  card-title listCard-Options contentCenter"><span className="mr-tb-10 text-center">Tasks</span></div>
-                    <div className="offset-sm-4 col-sm-3 col-12 pd-7"><input className="inputbox" type="text" className="searchbox" placeholder="search by task name" onChange ={(e)=> searchByTaskname(e.target.value)} /></div>
+                    <div className="offset-sm-4 col-sm-3 col-12 pd-7"><input className="inputbox searchbox" type="text"  placeholder="search by task name" onChange ={(e)=> searchByTaskname(e.target.value)} /></div>
                     <div className="col-sm-2 col-12 pd-25 listCard-Options"><button style={{width:"100%"}}  className="btn btn-primary mr-tb-10" onClick={() => setModalShow(true)} >+New Task</button></div>
 
                 </div>
