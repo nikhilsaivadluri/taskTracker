@@ -1,7 +1,8 @@
 import React, { useState} from "react";
 import './loginComponent.css';
 import { useHistory } from "react-router-dom";
-
+import axios from 'axios';
+import config from '../config';
 function LoginComponent()
 {
     const [id,setId] = useState();
@@ -9,9 +10,24 @@ function LoginComponent()
     const history = useHistory();
 
     const handleSubmit = (e)=>{
-        history.push("/dashboard");
+     
+         let payload ={
+            name:name,
+            id: id
+        };
+        axios.post(`${config.apiUrl}/login`,payload)
+        .then(res => {
+         console.log(res);
+         localStorage.setItem("token",res.data.token.token);
+         localStorage.setItem("currentuser",res.data.token.name);
+         localStorage.setItem("imageUrl",res.data.image)
+         history.push("/dashboard");
+        },error=>{
+            console.log(error);
+        })
+       
 
-        //e.preventDefault();
+        
     }
 
     return (
