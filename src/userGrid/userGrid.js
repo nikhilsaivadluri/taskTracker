@@ -21,11 +21,13 @@ function UserGridComponent()
     
     let userCards = users.map((user,index)=>{
         let date = new  Date(user.dob.date);
+        let dob = date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear();
+        let username = user.name.title+". "+user.name.first+" "+ user.name.last;
         return (
         <div key={index} className="col-sm-3 cards">
         <img className="profileImage" src={user.picture.large} alt={user.first}/>
-        <span className="usertitle">{user.name.title+". "+user.name.first+" "+ user.name.last}</span>
-        <p className="dob-label">{date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear()}</p>
+        <span className="usertitle">{username}</span>
+        <p className="dob-label">{dob}</p>
         <p className="email-label">{user.email}</p>  
       </div>)
     })
