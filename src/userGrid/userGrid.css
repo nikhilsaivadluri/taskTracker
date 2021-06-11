@@ -1,0 +1,44 @@
+.grid{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.cards {
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+max-width: 300px;
+margin: auto;
+text-align: center;
+font-family: arial;
+height: 339px;
+margin: 7px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px 0px;
+}
+
+.usertitle {
+color: black;
+font-size: 23px;
+}
+
+.profileImage{
+    width: 100%;
+    height: 59%;
+    /* border-radius: 0.25rem; */
+}
+
+.dob-label {
+    color: grey;
+    font-size: 18px;
+}
+
+.email-label {
+    color: grey;
+    font-size: 18px;
+}
+
+

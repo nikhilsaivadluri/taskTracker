@@ -2,6 +2,7 @@
 import './App.css';
 import LoginComponent from './loginComponent/loginComponent';
 import DashBoardComponent from './dashBoardComponent/dashBoardComponent';
+import UserGridComponent from './userGrid/userGrid'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 
@@ -16,6 +17,10 @@ function App() {
         <Route path="/dashboard">
           <DashBoardComponent />
         </Route>
+        <Route path="/users">
+          <UserGridComponent />
+        </Route>
+
         <Redirect to="/login" />
         </Switch>
       </BrowserRouter>
